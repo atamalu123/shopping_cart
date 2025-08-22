@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class Main {
@@ -5,9 +6,9 @@ public class Main {
         // Construct shopping cart
         ShoppingCart cart = new ShoppingCart(new ArrayList<>());
 
-        cart.addItem(new Item("apples", 3, 0.50, "grocery"));
-        cart.addItem(new Item("jeans", 1, 40.00, "clothing"));
-        cart.addItem(new Item("laptop", 1, 999.99, "electronics"));
+        cart.addItem(new Item("apples", 3, new BigDecimal("0.50"), "grocery"));
+        cart.addItem(new Item("jeans", 1, new BigDecimal("40.00"), "clothing"));
+        cart.addItem(new Item("laptop", 1, new BigDecimal("999.99"), "electronics"));
 
         // Construct receipt
         System.out.println("--- Receipt ---");

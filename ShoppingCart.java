@@ -1,67 +1,65 @@
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 public class ShoppingCart {
     
     private ArrayList<Item> items = new ArrayList<>();
 
+    // Constructor
     public ShoppingCart(ArrayList<Item> items) {
         this.items = items;
     }
 
     public void addItem(Item item) {
         this.items.add(item);
-
     }
 
     public ArrayList<Item> getItems() {
         return this.items;
     }
 
-    public double calculateTotalTax() {
-        double totalTax = 0;
+    // Calculation methods
+    public BigDecimal calculateTotalTax() {
+        BigDecimal totalTax = new BigDecimal("0");
         for(Item item : items){
-            totalTax += item.computeTax();
+            totalTax = totalTax.add(item.computeTax());
         }
-        // extra steps for rounding
-        totalTax *= 100;
-        totalTax = (double)((int) totalTax);
-        totalTax /= 100;
-        return totalTax;
+        return totalTax.setScale(2, RoundingMode.HALF_UP);
     }
 
-    public double calculateSubtotal() {
-        double subtotal = 0.0;
+    public BigDecimal calculateSubtotal() {
+        BigDecimal subtotal = new BigDecimal("0");
         for(Item item : items) {
-            subtotal += item.computeLineTotal();
+            subtotal = subtotal.add(item.computeLineTotal());
         }
-        // extra steps for rounding
-        subtotal *= 100;
-        subtotal = (double)((int) subtotal);
-        subtotal /= 100;
-        return subtotal;
+        return subtotal.setScale(2, RoundingMode.HALF_UP);
     }
 
-    public double calculateDiscounts() {
-        double subtotal = calculateSubtotal();
-        double discount = 0;
+    public BigDecimal calculateDiscounts() {
+        
+        BigDecimal subtotal = calculateSubtotal();
+        BigDecimal discount = new BigDecimal("0");
+
         // If subtotal > 1000: apply 10% discount on the subtotal before tax.
-        if(subtotal > 1000){
-            discount += .10 * subtotal;
+        final BigDecimal DISCOUNT_THRESHOLD = new BigDecimal("1000.00");
+        
+        if(subtotal.compareTo(DISCOUNT_THRESHOLD) > 0) { // compareTo returns 0 if left > right
+            discount = discount.add(subtotal.multiply(new BigDecimal("0.10")));
         }
+        
         // If buying more than 5 units of the same item, apply “bulk discount”: 5% off that line item.
-        for(Item item : items){
-            if(item.quantity >= 5){
-                discount += item.computeLineTotal() * .05;
+        for(Item item : items) {
+            if(item.quantity >= 5) {
+                discount = item.computeLineTotal()
+                        .multiply(new BigDecimal("0.05"));
             }
         }
-        // Extra steps for rounding
-        discount *= 100;
-        discount = (double)((int) discount);
-        discount /= 100;
 
-        return discount;
+        return discount.setScale(2, RoundingMode.HALF_UP);
     }
 
+    // Methods for printing to console
     public void printReceiptLines() {
         for(Item item : items){
             StringBuilder line = new StringBuilder();
@@ -74,7 +72,7 @@ public class ShoppingCart {
             line.append(String.format("%.2f", item.computeLineTotal()));
             line.append(" ");
             line.append("(Tax ");
-            line.append(String.format("%.0f", item.getTaxRate() * 100));
+            line.append(String.format("%.0f", item.getTaxRate().multiply(new BigDecimal("100"))));
             line.append("%: ");
             line.append(String.format("$%.2f", item.computeTax()));
             line.append(")");
@@ -91,7 +89,7 @@ public class ShoppingCart {
     }
 
     public void printSubtotalAfterDiscountsLine() {
-        double subtotalAfterDiscounts = calculateSubtotal() - calculateDiscounts();
+        BigDecimal subtotalAfterDiscounts = calculateSubtotal().subtract(calculateDiscounts());
         System.out.println("Subtotal after Discounts: $" + subtotalAfterDiscounts);
     }
 
@@ -100,7 +98,8 @@ public class ShoppingCart {
     }
 
     public void printGrandTotal() {
-        double grandTotal = (calculateSubtotal() - calculateDiscounts()) + calculateTotalTax();
+        BigDecimal grandTotal = calculateSubtotal().subtract(calculateDiscounts());
+        grandTotal = grandTotal.add(calculateTotalTax());
         System.out.println("Grand total: $" + String.format("%.2f", grandTotal));
     }
 
