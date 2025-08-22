@@ -1,3 +1,16 @@
+# 1.0.2
+
+## Changes
+
+### Encapsulation
+
+* `public` variables in **Item** class -> `private` variables + getter methods
+
+### Refactoring
+
+* Moved methods for printing individual output lines from `ShoppingCart` to new `ShoppingCartPrinter` class
+* Moved final output construction from main to `ShoppingCartPrinter`
+
 # 1.0.1
 
 ## Changes

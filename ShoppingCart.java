@@ -50,57 +50,13 @@ public class ShoppingCart {
         
         // If buying more than 5 units of the same item, apply “bulk discount”: 5% off that line item.
         for(Item item : items) {
-            if(item.quantity >= 5) {
+            if(item.getQuantity() >= 5) {
                 discount = item.computeLineTotal()
                         .multiply(new BigDecimal("0.05"));
             }
         }
 
         return discount.setScale(2, RoundingMode.HALF_UP);
-    }
-
-    // Methods for printing to console
-    public void printReceiptLines() {
-        for(Item item : items){
-            StringBuilder line = new StringBuilder();
-            line.append(item.name);
-            line.append(" x ");
-            line.append(item.quantity);
-            line.append(" @ $");
-            line.append(String.format("%.2f", item.price_per_unit));
-            line.append(" = $");
-            line.append(String.format("%.2f", item.computeLineTotal()));
-            line.append(" ");
-            line.append("(Tax ");
-            line.append(String.format("%.0f", item.getTaxRate().multiply(new BigDecimal("100"))));
-            line.append("%: ");
-            line.append(String.format("$%.2f", item.computeTax()));
-            line.append(")");
-            System.out.println(line.toString());
-        }
-    }
-
-    public void printSubtotalLine() {
-        System.out.println("Subtotal: $" + calculateSubtotal());
-    }
-
-    public void printDiscountsLine() {
-        System.out.println("Discounts: $-" + calculateDiscounts());
-    }
-
-    public void printSubtotalAfterDiscountsLine() {
-        BigDecimal subtotalAfterDiscounts = calculateSubtotal().subtract(calculateDiscounts());
-        System.out.println("Subtotal after Discounts: $" + subtotalAfterDiscounts);
-    }
-
-    public void printTotalTaxLine() {
-        System.out.println("Tax: $" + calculateTotalTax());
-    }
-
-    public void printGrandTotal() {
-        BigDecimal grandTotal = calculateSubtotal().subtract(calculateDiscounts());
-        grandTotal = grandTotal.add(calculateTotalTax());
-        System.out.println("Grand total: $" + String.format("%.2f", grandTotal));
     }
 
 }

@@ -3,14 +3,14 @@ import java.math.RoundingMode;
 import java.util.HashMap;
 
 public class Item {
-    public String name;
-    public int quantity;
-    public BigDecimal price_per_unit;
-    public String category;
+    private String name;
+    private int quantity;
+    private BigDecimal price_per_unit;
+    private String category;
     private HashMap<String, BigDecimal> taxRates;
     
     // Constructor
-    public Item(String name, int quantity, BigDecimal price_per_unit, String category){
+    public Item(String name, int quantity, BigDecimal price_per_unit, String category) {
         this.name = name;
         this.quantity = quantity;
         this.price_per_unit = price_per_unit;
@@ -41,6 +41,22 @@ public class Item {
 
     public BigDecimal getTaxRate() {
         return taxRates.get(category);
+    }
+    
+    public String getName() {
+        return name;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public BigDecimal getPricePerUnit() {
+        return price_per_unit;
+    }
+
+    public String getCategory() {
+        return category;
     }
 
 }
