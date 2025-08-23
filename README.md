@@ -14,6 +14,10 @@ Discounts:
   * If subtotal > 1000: apply 10% discount on the subtotal before tax.
   * If buying more than 5 units of the same item, apply “bulk discount”: 5% off that line item.
 
+# Instructions
+
+No dependencies, just run `Main.java` using whatever IDE you have Java set up in
+
 # Input 
 
 A list of purchased items, each with:

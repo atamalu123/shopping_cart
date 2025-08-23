@@ -1,3 +1,22 @@
+# 1.0.3
+
+## Changes
+
+### Separating data and business logic
+
+`Item.java` previously mixed data (name, quantity, price) with business logic (taxes, discounts). To address this, taxes and discounts were moved from `Item` to new files to implement rules:
+  * `Item` now deals with item data only
+  * `ShoppingCart` aggregates items and delegates to services
+  * `TaxRule` constructs a tax rule interface that `GroceryTaxRule`, `ClothingTaxRule`, and `ElectronicsTaxRule` implement
+  * `TaxService` calculates taxes using `__TaxRule` classes
+  * `DiscountRule` constructs an interface for discount rules that `BulkDiscountRule` implements
+  * `DiscountService` calculates discounts
+  * `Main` is still for execution
+
+## Bug fixes
+
+* A bulk discount was previously being incorrectly applied to carts with 5 or more items, rather than for each item with quantity of 5+ *of the same type*
+
 # 1.0.2
 
 ## Changes

@@ -35,12 +35,11 @@ public class ShoppingCartPrinter {
     }
 
     public void printDiscountsLine() {
-        System.out.println("Discounts: $-" + cart.calculateDiscounts());
+        System.out.println("Discounts: $-" + cart.calculateTotalDiscount());
     }
 
     public void printSubtotalAfterDiscountsLine() {
-        BigDecimal subtotalAfterDiscounts = cart.calculateSubtotal().subtract(cart.calculateDiscounts());
-        System.out.println("Subtotal after Discounts: $" + subtotalAfterDiscounts);
+        System.out.println("Subtotal after Discounts: $" + cart.calculateSubtotalAfterDiscounts());
     }
 
     public void printTotalTaxLine() {
@@ -48,9 +47,7 @@ public class ShoppingCartPrinter {
     }
 
     public void printGrandTotal() {
-        BigDecimal grandTotal = cart.calculateSubtotal().subtract(cart.calculateDiscounts());
-        grandTotal = grandTotal.add(cart.calculateTotalTax());
-        System.out.println("Grand total: $" + String.format("%.2f", grandTotal));
+        System.out.println("Grand total: $" + String.format("%.2f", cart.calculateGrandTotal()));
     }
 
     public void printFullReceipt() {
